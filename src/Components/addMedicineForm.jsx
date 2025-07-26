@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 
 function AddMedicineForm({ onAdd }) {
+    const [supplierName, setSupplierName] = useState('');
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!name || !quantity || !price) return;
+        if (!supplierName ||!name || !quantity || !price) return;
 
-        onAdd({ name, quantity, price });
+        onAdd({ supplierName, name, quantity, price });
+        setSupplierName('')
         setName('');
         setQuantity('');
         setPrice('');
@@ -18,6 +20,12 @@ function AddMedicineForm({ onAdd }) {
     return (
         <form onSubmit={handleSubmit}>
             <h2>Add Medicine</h2>
+            <input
+                type="text"
+                placeholder="Supplier Name"
+                value={supplierName}
+                onChange={(e) => setSupplierName(e.target.value)}
+            />
             <input
                 type="text"
                 placeholder="Medicine Name"

@@ -11,7 +11,7 @@ function App() {
 
     return (
         <div className="container">
-            <h1>Pharmacy Management App</h1>
+            <h1>MiPoll Inventory System</h1>
             <AddMedicineForm onAdd={addMedicine} />
             <MedicineList medicines={medicines} />
         </div>

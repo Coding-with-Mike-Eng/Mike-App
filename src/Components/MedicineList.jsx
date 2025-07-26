@@ -14,6 +14,7 @@ function MedicineList({ medicines }) {
                 <tbody>
                 {medicines.map((med, index) => (
                     <tr key={index}>
+                        <td>{med.supplierName}</td>
                         <td>{med.name}</td>
                         <td>{med.quantity}</td>
                         <td>{med.price}</td>
