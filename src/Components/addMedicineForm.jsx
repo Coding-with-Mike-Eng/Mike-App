@@ -8,10 +8,18 @@ function AddMedicineForm({ onAdd }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!supplierName ||!name || !quantity || !price) return;
 
-        onAdd({ supplierName, name, quantity, price });
-        setSupplierName('')
+        const newMedicine = {
+            supplierName,
+            name,
+            quantity: parseInt(quantity),
+            price: parseFloat(price),
+        };
+
+        onAdd(newMedicine);
+
+        // Reset form
+        setSupplierName('');
         setName('');
         setQuantity('');
         setPrice('');
@@ -19,30 +27,33 @@ function AddMedicineForm({ onAdd }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Add Medicine</h2>
             <input
                 type="text"
                 placeholder="Supplier Name"
                 value={supplierName}
                 onChange={(e) => setSupplierName(e.target.value)}
+                required
             />
             <input
                 type="text"
-                placeholder="Medicine Name"
+                placeholder="Product Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
             />
             <input
                 type="number"
                 placeholder="Quantity"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
+                required
             />
             <input
                 type="number"
                 placeholder="Price (Ksh)"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                required
             />
             <button type="submit">Add Medicine</button>
         </form>
@@ -50,3 +61,4 @@ function AddMedicineForm({ onAdd }) {
 }
 
 export default AddMedicineForm;
+
