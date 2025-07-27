@@ -5,7 +5,7 @@ function AddMedicineForm({ onAdd }) {
     const [name, setName] = useState('');
     const [stock, setStock] = useState('');
     const [price, setPrice] = useState('');
-    const [expiryDate, setExpiryDate] = useState(''); // optional
+    const [expiryDate, setExpiryDate] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,7 +20,6 @@ function AddMedicineForm({ onAdd }) {
 
         onAdd(newMedicine);
 
-        // Reset form fields
         setManufacturer('');
         setName('');
         setStock('');
@@ -60,7 +59,6 @@ function AddMedicineForm({ onAdd }) {
             />
             <input
                 type="date"
-                placeholder="Expiry Date"
                 value={expiryDate}
                 onChange={(e) => setExpiryDate(e.target.value)}
             />
@@ -70,3 +68,4 @@ function AddMedicineForm({ onAdd }) {
 }
 
 export default AddMedicineForm;
+
