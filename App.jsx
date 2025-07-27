@@ -21,25 +21,23 @@ function App() {
     }, [medicines]);
 
     // Add new medicine to backend, then re-fetch
-    const addMedicine = (medicine) => {
-        fetch(backendUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(medicine)
-        })
-        .then(res => {
-            if (!res.ok) throw new Error('Failed to add medicine');
-            return res.json();
-        })
-        .then(() => {
-            // Re-fetch all medicines
-            return fetch(backendUrl);
-        })
-        .then(res => res.json())
-        .then(data => setMedicines(data))
-        .catch(err => console.error('Error:', err));
-    };
-
+   const addMedicine = (medicine) => {
+    fetch(backendUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(medicine)
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Failed to add medicine');
+        return res.json(); // 🔁 This is the saved medicine
+    })
+    .then(savedMedicine => {
+        console.log('✅ Saved from backend:', savedMedicine);
+        // 🔁 Add this to your list manually
+        setMedicines(prev => [...prev, savedMedicine]);
+    })
+    .catch(err => console.error('❌ Error adding medicine:', err));
+};
     // 🔧 BONUS: Add a dummy medicine directly
     const addDummyMedicine = () => {
         setMedicines(prev => [
