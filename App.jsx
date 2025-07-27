@@ -5,24 +5,35 @@ import MedicineList from './src/Components/MedicineList.jsx';
 function App() {
     const [medicines, setMedicines] = useState([]);
 
-    // ✅ Fetch medicines from backend on load
+    const backendUrl = 'https://inventory-backend-0x8j.onrender.com'; 
+
+    // ✅ Fetch all medicines when app loads
     useEffect(() => {
-        fetch('https://inventory-backend-0x8j.onrender.com') // <-- REPLACE this with actual backend URL
+        fetch(backendUrl)
             .then(res => res.json())
-            .then(data => setMedicines(data))
+            .then(data => {
+                setMedicines(data);
+                console.log('Fetched medicines:', data);
+            })
             .catch(err => console.error('Error fetching medicines:', err));
     }, []);
 
-    // ✅ Add medicine and send to backend
+    // ✅ Add a new medicine and update the list
     const addMedicine = (medicine) => {
-        fetch('https://inventory-backend-0x8j.onrender.com', {
+        fetch(backendUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(medicine)
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Failed to add medicine');
+            }
+            return res.json();
+        })
         .then(savedMedicine => {
-            setMedicines([...medicines, savedMedicine]);
+            console.log('Saved medicine:', savedMedicine);
+            setMedicines(prev => [...prev, savedMedicine]);
         })
         .catch(err => console.error('Error adding medicine:', err));
     };
