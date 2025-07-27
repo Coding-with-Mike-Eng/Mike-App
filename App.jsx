@@ -5,40 +5,50 @@ import MedicineList from './src/Components/MedicineList.jsx';
 function App() {
     const [medicines, setMedicines] = useState([]);
 
-    const backendUrl = 'https://inventory-backend-0x8j.onrender.com/api/medicines'; 
+    const backendUrl = 'https://inventory-backend-0x8j.onrender.com/api/medicines';
 
-    // Fetch medicines on mount
+    // ✅ Fetch medicines on mount and ensure it's an array
     useEffect(() => {
         fetch(backendUrl)
             .then(res => res.json())
-            .then(data => setMedicines(data))
-            .catch(err => console.error('Error fetching medicines:', err));
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setMedicines(data);
+                } else {
+                    console.error('❌ Fetched data is not an array:', data);
+                    setMedicines([]); // fallback
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching medicines:', err);
+                setMedicines([]); // fallback on error
+            });
     }, []);
 
     // Log medicines whenever they update
     useEffect(() => {
-        console.log("Updated medicine list:", medicines);
+        console.log("✅ Updated medicine list:", medicines);
     }, [medicines]);
 
-    // Add new medicine to backend, then re-fetch
-   const addMedicine = (medicine) => {
-    fetch(backendUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(medicine)
-    })
-    .then(res => {
-        if (!res.ok) throw new Error('Failed to add medicine');
-        return res.json(); // 🔁 This is the saved medicine
-    })
-    .then(savedMedicine => {
-        console.log('✅ Saved from backend:', savedMedicine);
-        // 🔁 Add this to your list manually
-        setMedicines(prev => [...prev, savedMedicine]);
-    })
-    .catch(err => console.error('❌ Error adding medicine:', err));
-};
-    // 🔧 BONUS: Add a dummy medicine directly
+    // ✅ Add new medicine to backend, then append to state
+    const addMedicine = (medicine) => {
+        fetch(backendUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(medicine)
+        })
+            .then(res => {
+                if (!res.ok) throw new Error('Failed to add medicine');
+                return res.json();
+            })
+            .then(savedMedicine => {
+                console.log('✅ Saved from backend:', savedMedicine);
+                setMedicines(prev => [...prev, savedMedicine]);
+            })
+            .catch(err => console.error('❌ Error adding medicine:', err));
+    };
+
+    // 🧪 Bonus: Add dummy data directly for testing
     const addDummyMedicine = () => {
         setMedicines(prev => [
             ...prev,
@@ -57,7 +67,6 @@ function App() {
             <h1>MiPoll Inventory System</h1>
             <AddMedicineForm onAdd={addMedicine} />
 
-            {/* 🔧 BONUS BUTTON HERE */}
             <button onClick={addDummyMedicine} style={{ margin: '10px', backgroundColor: 'lightgray' }}>
                 ➕ Add Dummy Medicine (for testing)
             </button>
@@ -68,4 +77,5 @@ function App() {
 }
 
 export default App;
+
 
