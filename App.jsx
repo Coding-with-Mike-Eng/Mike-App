@@ -5,7 +5,7 @@ import MedicineList from './src/Components/MedicineList.jsx';
 function App() {
     const [medicines, setMedicines] = useState([]);
 
-    const backendUrl = 'https://inventory-backend-0x8j.onrender.com'; 
+    const backendUrl = 'https://inventory-backend-0x8j.onrender.com/api/medicines'; 
 
     // Fetch medicines on mount
     useEffect(() => {
