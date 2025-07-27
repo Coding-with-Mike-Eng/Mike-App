@@ -5,20 +5,22 @@ import MedicineList from './src/Components/MedicineList.jsx';
 function App() {
     const [medicines, setMedicines] = useState([]);
 
-    const backendUrl = 'https://inventory-backend-0x8j.onrender.com'; 
+    const backendUrl = 'https://your-backend.onrender.com/api/medicines'; // ⛳ Replace with your actual backend
 
-    // ✅ Fetch all medicines when app loads
+    // Fetch medicines on mount
     useEffect(() => {
         fetch(backendUrl)
             .then(res => res.json())
-            .then(data => {
-                setMedicines(data);
-                console.log('Fetched medicines:', data);
-            })
+            .then(data => setMedicines(data))
             .catch(err => console.error('Error fetching medicines:', err));
     }, []);
 
-    // ✅ Add a new medicine and update the list
+    // Log medicines whenever they update
+    useEffect(() => {
+        console.log("Updated medicine list:", medicines);
+    }, [medicines]);
+
+    // Add new medicine to backend, then re-fetch
     const addMedicine = (medicine) => {
         fetch(backendUrl, {
             method: 'POST',
@@ -26,25 +28,46 @@ function App() {
             body: JSON.stringify(medicine)
         })
         .then(res => {
-            if (!res.ok) {
-                throw new Error('Failed to add medicine');
-            }
+            if (!res.ok) throw new Error('Failed to add medicine');
             return res.json();
         })
-        .then(savedMedicine => {
-            console.log('Saved medicine:', savedMedicine);
-            setMedicines(prev => [...prev, savedMedicine]);
+        .then(() => {
+            // Re-fetch all medicines
+            return fetch(backendUrl);
         })
-        .catch(err => console.error('Error adding medicine:', err));
+        .then(res => res.json())
+        .then(data => setMedicines(data))
+        .catch(err => console.error('Error:', err));
+    };
+
+    // 🔧 BONUS: Add a dummy medicine directly
+    const addDummyMedicine = () => {
+        setMedicines(prev => [
+            ...prev,
+            {
+                manufacturer: 'Test Co',
+                name: 'Paracetamol',
+                stock: 100,
+                price: 50,
+                expiryDate: new Date().toISOString()
+            }
+        ]);
     };
 
     return (
         <div className="container">
             <h1>MiPoll Inventory System</h1>
             <AddMedicineForm onAdd={addMedicine} />
+
+            {/* 🔧 BONUS BUTTON HERE */}
+            <button onClick={addDummyMedicine} style={{ margin: '10px', backgroundColor: 'lightgray' }}>
+                ➕ Add Dummy Medicine (for testing)
+            </button>
+
             <MedicineList medicines={medicines} />
         </div>
     );
 }
 
 export default App;
+
