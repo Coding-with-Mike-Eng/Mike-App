@@ -1,3 +1,5 @@
+import React from 'react';
+
 function MedicineList({ medicines }) {
     return (
         <div className="Table">
@@ -5,19 +7,21 @@ function MedicineList({ medicines }) {
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
-                        <th>Manufacturer</th> {/* changed */}
+                        <th>Manufacturer</th>
                         <th>Product Name</th>
-                        <th>Stock</th> {/* changed */}
+                        <th>Stock (pcs)</th>
                         <th>Price (Ksh)</th>
+                        <th>Expiry Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     {medicines.map((med, index) => (
                         <tr key={index}>
-                            <td>{med.manufacturer}</td> {/* changed */}
+                            <td>{med.manufacturer}</td>
                             <td>{med.name}</td>
-                            <td>{med.stock}</td> {/* changed */}
+                            <td>{med.stock}</td>
                             <td>{med.price}</td>
+                            <td>{med.expiryDate ? new Date(med.expiryDate).toLocaleDateString() : 'N/A'}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -25,4 +29,6 @@ function MedicineList({ medicines }) {
         </div>
     );
 }
+
 export default MedicineList;
+
