@@ -7,7 +7,7 @@ function App() {
 
     // ✅ Fetch medicines from backend on load
     useEffect(() => {
-        fetch('https://your-backend.onrender.com/api/medicines') // <-- REPLACE this with actual backend URL
+        fetch('https://inventory-backend-0x8j.onrender.com') // <-- REPLACE this with actual backend URL
             .then(res => res.json())
             .then(data => setMedicines(data))
             .catch(err => console.error('Error fetching medicines:', err));
