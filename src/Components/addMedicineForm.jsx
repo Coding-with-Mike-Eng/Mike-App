@@ -1,37 +1,40 @@
 import React, { useState } from 'react';
 
 function AddMedicineForm({ onAdd }) {
-    const [supplierName, setSupplierName] = useState('');
+    const [manufacturer, setManufacturer] = useState('');
     const [name, setName] = useState('');
-    const [quantity, setQuantity] = useState('');
+    const [stock, setStock] = useState('');
     const [price, setPrice] = useState('');
+    const [expiryDate, setExpiryDate] = useState(''); // optional
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newMedicine = {
-            supplierName,
+            manufacturer,
             name,
-            quantity: parseInt(quantity),
+            stock: parseInt(stock),
             price: parseFloat(price),
+            expiryDate: expiryDate ? new Date(expiryDate) : null
         };
 
         onAdd(newMedicine);
 
-        // Reset form
-        setSupplierName('');
+        // Reset form fields
+        setManufacturer('');
         setName('');
-        setQuantity('');
+        setStock('');
         setPrice('');
+        setExpiryDate('');
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <input
                 type="text"
-                placeholder="Supplier Name"
-                value={supplierName}
-                onChange={(e) => setSupplierName(e.target.value)}
+                placeholder="Manufacturer"
+                value={manufacturer}
+                onChange={(e) => setManufacturer(e.target.value)}
                 required
             />
             <input
@@ -43,9 +46,9 @@ function AddMedicineForm({ onAdd }) {
             />
             <input
                 type="number"
-                placeholder="Quantity"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                placeholder="Stock"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
                 required
             />
             <input
@@ -55,10 +58,15 @@ function AddMedicineForm({ onAdd }) {
                 onChange={(e) => setPrice(e.target.value)}
                 required
             />
+            <input
+                type="date"
+                placeholder="Expiry Date"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(e.target.value)}
+            />
             <button type="submit">Add Medicine</button>
         </form>
     );
 }
 
 export default AddMedicineForm;
-
