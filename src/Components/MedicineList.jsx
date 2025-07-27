@@ -1,6 +1,8 @@
-import React from 'react';
-
 function MedicineList({ medicines }) {
+    if (!Array.isArray(medicines)) {
+        return <p>⚠️ Error: Medicines data is not an array.</p>;
+    }
+
     return (
         <div className="Table">
             <h2>Medicine List</h2>
@@ -28,6 +30,8 @@ function MedicineList({ medicines }) {
             </table>
         </div>
     );
+}
+
 }
 
 export default MedicineList;
